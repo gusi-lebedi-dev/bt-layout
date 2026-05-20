@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Балтика BREW</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<section class="plug">
+    <div class="container">
+        <div class="video-wrapper">
+            <video src="video_slide.mp4" muted autoplay loop preload="auto" playsinline>
+                Ваш браузер не поддерживает видео.
+            </video>
+        </div>
+        <div class="text-wrapper">
+            <h1 id="changingText" class="dynamic-title fade-in">Магические машины уже запущены</h1>
+        </div>
+    </div>
+</section>
+<script>
+    (function() {
+        const texts = [
+            "Магические машины уже запущены",
+            "скоро здесь появится сайт балтики брю"
+        ];
+
+        let currentIndex = 0;
+        const textElement = document.getElementById('changingText');
+
+        function switchText() {
+            textElement.classList.remove('fade-in');
+            textElement.classList.add('fade-out');
+
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % texts.length;
+
+                textElement.textContent = texts[currentIndex];
+
+                const newElement = document.createElement(currentIndex === 0 ? 'h1' : 'h2');
+                newElement.className = 'dynamic-title fade-out'; // начинаем с прозрачного
+                newElement.textContent = texts[currentIndex];
+                newElement.style.margin = '0';
+
+                textElement.parentNode.replaceChild(newElement, textElement);
+
+                window.changingTextElement = newElement;
+                if (window.changingTextElement) {
+                    setTimeout(() => {
+                        window.changingTextElement.classList.remove('fade-out');
+                        window.changingTextElement.classList.add('fade-in');
+                    }, 20);
+                }
+
+                if (window.changingTextElement) {
+                }
+            }, 1000);
+        }
+
+        const wrapper = document.querySelector('.text-wrapper');
+        wrapper.innerHTML = '';
+
+        let currentIdx = 0;
+        let currentDomElement = null;
+
+        function createTitleElement(index) {
+            const tagName = index === 0 ? 'h1' : 'h2';
+            const el = document.createElement(tagName);
+            el.className = 'dynamic-title';
+            el.textContent = texts[index];
+            el.style.margin = '0';
+            return el;
+        }
+
+        currentDomElement = createTitleElement(0);
+        currentDomElement.classList.add('fade-in');
+        wrapper.appendChild(currentDomElement);
+
+        function smoothSwitch() {
+            if (!currentDomElement) return;
+
+            currentDomElement.classList.remove('fade-in');
+            currentDomElement.classList.add('fade-out');
+
+            setTimeout(() => {
+                const nextIndex = (currentIdx + 1) % texts.length;
+
+                const newElement = createTitleElement(nextIndex);
+                newElement.classList.add('fade-out');
+
+                wrapper.replaceChild(newElement, currentDomElement);
+
+                currentDomElement = newElement;
+                currentIdx = nextIndex;
+
+                setTimeout(() => {
+                    if (currentDomElement) {
+                        currentDomElement.classList.remove('fade-out');
+                        currentDomElement.classList.add('fade-in');
+                    }
+                }, 30);
+
+            }, 500);
+        }
+
+        let intervalId = setInterval(smoothSwitch, 3000);
+
+        window.addEventListener('beforeunload', function() {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+                .dynamic-title {
+                    transition: opacity 0.5s ease-in-out;
+                }
+                .fade-out {
+                    opacity: 0;
+                }
+                .fade-in {
+                    opacity: 1;
+                }
+            `;
+        document.head.appendChild(style);
+    })();
+</script>
+</body>
+</html>
