@@ -16,8 +16,7 @@
 .plug {
     display: flex;
     justify-content: center;
-    align-items: center;
-    background: #062043;
+    background: #00143c;
     width: 100%;
     min-height: 100vh;
 }
@@ -25,7 +24,6 @@
 .plug .container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     max-width: 100%;
     width: 100%;
@@ -33,29 +31,11 @@
 
 .video-wrapper {
     margin-bottom: 39px;
-    max-width: 1200px;
-    max-height: 650px;
+    max-width: 660px;
+    max-height: 560px;
     width: 100%;
     position: relative;
     overflow: hidden;
-    background: #062043;
-}
-.video-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 2;
-    background: radial-gradient(
-            ellipse at center,
-            transparent 50%,
-            rgba(6, 32, 67, 0.2) 70%,
-            rgba(6, 32, 67, 0.6) 85%,
-            #062043 100%
-    );
 }
 
 video {
