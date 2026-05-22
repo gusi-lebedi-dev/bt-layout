@@ -6,6 +6,11 @@
     font-display: swap;
 }
 
+:root {
+    --page-bg: #051f42;
+    --edge-fade: clamp(72px, 12vw, 150px);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -16,7 +21,7 @@
 .plug {
     display: flex;
     justify-content: center;
-    background: #00143c;
+    background: var(--page-bg);
     width: 100%;
     min-height: 100vh;
 }
@@ -31,11 +36,49 @@
 
 .video-wrapper {
     margin-bottom: 39px;
-    max-width: 660px;
-    max-height: 560px;
+    max-width: 900px;
     width: 100%;
     position: relative;
     overflow: hidden;
+    background: var(--page-bg);
+}
+
+.video-wrapper:before {
+    position: absolute;
+    content: '';
+    z-index: 3;
+    pointer-events: none;
+    inset: 0;
+    background:
+        linear-gradient(90deg, var(--page-bg) 0, rgba(5, 31, 66, 0.85) 24px, rgba(5, 31, 66, 0) var(--edge-fade)),
+        linear-gradient(270deg, var(--page-bg) 0, rgba(5, 31, 66, 0.85) 24px, rgba(5, 31, 66, 0) var(--edge-fade)),
+        linear-gradient(180deg, var(--page-bg) 0, rgba(5, 31, 66, 0) calc(var(--edge-fade) * 0.45)),
+        linear-gradient(0deg, var(--page-bg) 0, rgba(5, 31, 66, 0) calc(var(--edge-fade) * 0.45));
+}
+
+.video-wrapper:after {
+    position: absolute;
+    content: '';
+    z-index: 2;
+    pointer-events: none;
+    inset: 0;
+    background: rgba(5, 31, 66, 0.18);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    -webkit-mask: linear-gradient(
+        90deg,
+        #000 0,
+        transparent calc(var(--edge-fade) * 0.95),
+        transparent calc(100% - var(--edge-fade) * 0.95),
+        #000 100%
+    );
+    mask: linear-gradient(
+        90deg,
+        #000 0,
+        transparent calc(var(--edge-fade) * 0.95),
+        transparent calc(100% - var(--edge-fade) * 0.95),
+        #000 100%
+    );
 }
 
 video {
@@ -45,13 +88,34 @@ video {
     object-fit: cover;
 }
 
-.video-wrapper.fixed-height {
-    height: 646px;
+.video-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(24px);
+    opacity: 0.55;
+    transform: scale(1.16);
 }
 
-.video-wrapper.fixed-height video {
-    height: 100%;
-    object-fit: cover;
+.video-main {
+    position: relative;
+    z-index: 1;
+    -webkit-mask: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 var(--edge-fade),
+        #000 calc(100% - var(--edge-fade)),
+        transparent 100%
+    );
+    mask: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 var(--edge-fade),
+        #000 calc(100% - var(--edge-fade)),
+        transparent 100%
+    );
 }
 
 .text-wrapper {
