@@ -11,7 +11,6 @@
 <section class="plug">
     <div class="container">
         <div class="video-wrapper">
-            <video class="video-backdrop" src="video_slide.mp4" muted autoplay loop preload="auto" playsinline aria-hidden="true"></video>
             <video class="video-main" src="video_slide.mp4" muted autoplay loop preload="auto" playsinline>
                 Ваш браузер не поддерживает видео.
             </video>
@@ -27,8 +26,16 @@
         ];
 
         const wrapper = document.querySelector('.text-wrapper');
+        const video = document.querySelector('.video-main');
         let currentIndex = 0;
         let currentElement = createTitleElement(currentIndex);
+
+        function playVideo() {
+            if (!video) return;
+
+            video.muted = true;
+            video.play().catch(function() {});
+        }
 
         function createTitleElement(index) {
             const el = document.createElement(index === 0 ? 'h1' : 'h2');
@@ -58,6 +65,17 @@
         }
 
         const intervalId = setInterval(smoothSwitch, 3000);
+
+        playVideo();
+        if (video) {
+            video.addEventListener('canplay', playVideo, { once: true });
+        }
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                playVideo();
+            }
+        });
+        window.addEventListener('pageshow', playVideo);
 
         window.addEventListener('beforeunload', function() {
             clearInterval(intervalId);

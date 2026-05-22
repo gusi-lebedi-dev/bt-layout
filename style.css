@@ -56,64 +56,29 @@
         linear-gradient(0deg, var(--page-bg) 0, rgba(5, 31, 66, 0) calc(var(--edge-fade) * 0.45));
 }
 
-.video-wrapper:after {
-    position: absolute;
-    content: '';
-    z-index: 2;
-    pointer-events: none;
-    inset: 0;
-    background: rgba(5, 31, 66, 0.18);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
-    -webkit-mask: linear-gradient(
-        90deg,
-        #000 0,
-        transparent calc(var(--edge-fade) * 0.95),
-        transparent calc(100% - var(--edge-fade) * 0.95),
-        #000 100%
-    );
-    mask: linear-gradient(
-        90deg,
-        #000 0,
-        transparent calc(var(--edge-fade) * 0.95),
-        transparent calc(100% - var(--edge-fade) * 0.95),
-        #000 100%
-    );
-}
-
 video {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: auto;
     display: block;
     object-fit: cover;
-}
-
-.video-backdrop {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    filter: blur(24px);
-    opacity: 0.55;
-    transform: scale(1.16);
-}
-
-.video-main {
-    position: relative;
-    z-index: 1;
     -webkit-mask: linear-gradient(
         90deg,
         transparent 0,
+        rgba(0, 0, 0, 0.18) 28px,
         #000 var(--edge-fade),
         #000 calc(100% - var(--edge-fade)),
+        rgba(0, 0, 0, 0.18) calc(100% - 28px),
         transparent 100%
     );
     mask: linear-gradient(
         90deg,
         transparent 0,
+        rgba(0, 0, 0, 0.18) 28px,
         #000 var(--edge-fade),
         #000 calc(100% - var(--edge-fade)),
+        rgba(0, 0, 0, 0.18) calc(100% - 28px),
         transparent 100%
     );
 }
