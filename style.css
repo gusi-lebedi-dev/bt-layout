@@ -58,6 +58,10 @@
         linear-gradient(270deg, var(--page-bg) 0, rgba(5, 31, 66, 0.85) 24px, rgba(5, 31, 66, 0) var(--edge-fade)),
         linear-gradient(180deg, var(--page-bg) 0, rgba(5, 31, 66, 0) calc(var(--edge-fade) * 0.45)),
         linear-gradient(0deg, var(--page-bg) 0, rgba(5, 31, 66, 0) calc(var(--edge-fade) * 0.45));
+
+        @media screen and (max-width: 768px) {
+            top: -11px;
+        }   
 }
 
 video {
