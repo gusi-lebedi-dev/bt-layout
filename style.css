@@ -63,6 +63,8 @@ video {
     height: auto;
     display: block;
     object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
     -webkit-mask: linear-gradient(
         90deg,
         transparent 0,
@@ -81,6 +83,10 @@ video {
         rgba(0, 0, 0, 0.18) calc(100% - 28px),
         transparent 100%
     );
+}
+
+.video-wrapper.is-video-ready video {
+    opacity: 1;
 }
 
 .text-wrapper {
@@ -104,7 +110,7 @@ video {
     text-fill-color: transparent;
     margin: 0;
     text-align: center;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.8s ease-in-out;
 }
 
 .fade-out {
@@ -113,6 +119,13 @@ video {
 
 .fade-in {
     opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    video,
+    .dynamic-title {
+        transition: none;
+    }
 }
 
 @media (max-width: 768px) {

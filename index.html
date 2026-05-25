@@ -11,7 +11,7 @@
 <section class="plug">
     <div class="container">
         <div class="video-wrapper">
-            <video class="video-main" src="video_slide3.mp4" muted autoplay preload="auto" playsinline>
+            <video class="video-main" src="video_slide2.mp4" muted autoplay preload="auto" playsinline>
                 Ваш браузер не поддерживает видео.
             </video>
         </div>
@@ -26,15 +26,32 @@
         ];
 
         const wrapper = document.querySelector('.text-wrapper');
+        const videoWrapper = document.querySelector('.video-wrapper');
         const video = document.querySelector('.video-main');
+        const videoFadeBeforeEnd = 0.9;
         let currentIndex = 0;
         let currentElement = createTitleElement(currentIndex);
+        let isRestartingVideo = false;
+
+        function showVideo() {
+            if (videoWrapper) {
+                videoWrapper.classList.add('is-video-ready');
+            }
+        }
+
+        function hideVideo() {
+            if (videoWrapper) {
+                videoWrapper.classList.remove('is-video-ready');
+            }
+        }
 
         function playVideo() {
             if (!video) return;
 
             video.muted = true;
-            video.play().catch(function() {});
+            video.play()
+                .then(showVideo)
+                .catch(function() {});
         }
 
         function createTitleElement(index) {
@@ -61,18 +78,36 @@
                 setTimeout(() => {
                     currentElement.classList.replace('fade-out', 'fade-in');
                 }, 30);
-            }, 500);
+            }, 800);
         }
 
-        const intervalId = setInterval(smoothSwitch, 3000);
+        const intervalId = setInterval(smoothSwitch, 3600);
 
         playVideo();
         if (video) {
+            video.addEventListener('loadeddata', showVideo, { once: true });
             video.addEventListener('canplay', playVideo, { once: true });
+            video.addEventListener('timeupdate', function() {
+                if (!video.duration || isRestartingVideo) return;
+
+                if (video.duration - video.currentTime <= videoFadeBeforeEnd) {
+                    hideVideo();
+                    isRestartingVideo = true;
+                }
+            });
+            video.addEventListener('ended', function() {
+                video.currentTime = 0;
+                requestAnimationFrame(function() {
+                    isRestartingVideo = false;
+                    playVideo();
+                });
+            });
         }
         document.addEventListener('visibilitychange', function() {
             if (!document.hidden) {
                 playVideo();
+            } else if (videoWrapper) {
+                videoWrapper.classList.remove('is-video-ready');
             }
         });
         window.addEventListener('pageshow', playVideo);
